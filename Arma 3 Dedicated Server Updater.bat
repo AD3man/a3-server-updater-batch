@@ -1,7 +1,7 @@
 @echo off
 rem // Arma 3 Dedicated Server/Mod Updater
 rem // David Wolfe (Red-Thirten)
-rem // Ver 2.1 - 09/30/21
+rem // Ver 2.2 - 10/3/21
 rem // MIT License (Free to copy/modify/distribute for free as long as author is credited)
 rem // Automatically installs/updates/verifies latest Arma 3 server, and selected mods (including symbolic link creation for easy start parameters, and key copying to the keys folder), using SteamCMD.
 rem // Refer to remark statements below for customization.
@@ -72,7 +72,11 @@ for %%m in (%MODLIST%) do (
 	)
 	echo.
 	echo Moving any mod .bikeys to the \keys directory...
-	for /r %STEAMCMD%\steamapps\workshop\content\107410\%%m %%f in (*.bikey) do copy "%%f" %SRVPATH%\keys
+	rem // Temp change to mod directory
+	pushd %STEAMCMD%\steamapps\workshop\content\107410\%%m
+	for /r %%f in (*.bikey) do copy "%%f" %SRVPATH%\keys
+	rem // Change back to original directory
+	popd
 	echo.
 )
 
