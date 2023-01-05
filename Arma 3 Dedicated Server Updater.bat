@@ -11,11 +11,11 @@ title Arma 3 Dedicated Server Updater
 
 rem // PATHS (Change as needed)
 rem // SteamCMD Directory (also where mods will be stored)
-SET STEAMCMD="C:\Servers\SteamCMD"
+SET STEAMCMD="PATH TO STEAMCMD FOLDER"
 rem // Server Directory (where server files will be stored)
-SET SRVPATH="C:\Servers\Arma 3 Servers\MyArmaServer"
+SET SRVPATH="PATH TO ARMA 3 server folder"
 rem // Steam Username (may require password on first run of batch script)
-SET STEAMUSERNAME="USERNAME_REQUIRED_HERE"
+SET STEAMUSERNAME="changeme"
 rem // Extra SteamCMD Flags (For example, profiling branch would be: -beta profiling -betapassword CautionSpecialProfilingAndTestingBranchArma3)
 SET STEAMCMDEXTRAFLAGS=
 
@@ -34,6 +34,8 @@ echo =================================================
 echo Arma 3 Dedicated Server/Mod Installer/Updater
 echo by David Wolfe (Red-Thirten)
 echo =================================================
+rem Change by AD3man:
+rem -  all files in /keys directory are removed before a3 server update (a3.bikey is recreated by the installer)
 echo.
 echo Make sure your Arma server is off, and your directory locations / mods are
 echo set properly in this batch file (using an editor) BEFORE continuing!!!
@@ -46,6 +48,11 @@ echo Updating/Validating Arma 3 Dedicated Server...
 echo =================================================
 echo.
 
+echo.
+echo Deleting all files in the \keys directory...
+rem a3.bikey is recreated on server update/validation so it is safe to delete everything
+del /Q %SRVPATH%\keys\* && echo All files in the \keys directory were deleted.
+
 rem // Install/Update/Validate Server
 %STEAMCMD%\steamcmd.exe +login %STEAMUSERNAME% +force_install_dir %SRVPATH% +app_update 233780 %STEAMCMDEXTRAFLAGS% validate +quit
 
@@ -57,7 +64,7 @@ echo Downloading/Updating %LISTLENGTH% mods...
 echo =================================================
 echo.
 timeout /t 3 > nul
-for %%m in (%MODLIST%) do ( 	
+for %%m in (%MODLIST%) do (
 	echo.
 	echo =================================================
 	echo Updating mod ID: %%m
